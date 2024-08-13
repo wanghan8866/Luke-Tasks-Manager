@@ -1,0 +1,34 @@
+# activate venv
+python -m venv venv
+venv\Scripts\Activate.ps1
+deactivate
+
+
+
+# current package
+pip freeze
+python -m pip install Django==4.2
+pip install -r requirements.txt
+pip install --upgrade setuptools
+python -m pip install --upgrade pip
+
+
+#Django creates project
+django-admin startproject backend .
+python manage.py startapp core
+python manage.py startapp userauths
+python manage.py startapp api
+python manage.py runserver
+
+
+python manage.py migrate
+python manage.py makemigrations
+
+python manage.py createsuperuser
+
+
+# node and npm
+npm install --global yarn
+yarn create vite . --template react # fast
+yarn
+yarn dev
