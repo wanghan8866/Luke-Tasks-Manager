@@ -227,10 +227,10 @@ JAZZMIN_SETTINGS = {
     "site_icon": None,
 
     # Welcome text on the login screen
-    "welcome_sign": "Welcome to the Luke LMS",
+    "welcome_sign": "Welcome to the Luke TM",
 
     # Copyright on the footer
-    "copyright": "Luke LMS",
+    "copyright": "Luke TM",
 
     # List of model admins to search from the search bar, search bar omitted if excluded
     # If you want to use a single search field you dont need to use a list, you can use a simple string 
