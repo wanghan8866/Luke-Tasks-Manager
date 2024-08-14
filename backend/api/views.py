@@ -56,9 +56,10 @@ class PasswordResetEmailVerifyAPIView(generics.RetrieveAPIView):
                 "link": link,
                 "username": user.username
             }
-
+            print(f"Password Reset: {link}")
             subject = "Password Reset Email"
-            text_body = render_to_string("email/password_reset.txt",  email_data)
+            # text_body = render_to_string("templates/email/password_reset.txt",  email_data)
+            text_body = ""
             html_body = render_to_string("email/password_reset.html",  email_data)
 
 

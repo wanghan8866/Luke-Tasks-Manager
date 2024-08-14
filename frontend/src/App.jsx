@@ -1,34 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
+import MainWrapper from './layouts/MainWrapper.jsx';
+import PrivateRoute from './layouts/PrivateRoute';
+import Register from "../src/views/auth/Register";
+import Login from "../src/views/auth/Login";
+import Logout from './views/auth/Logout.jsx';
+import ForgotPassword from './views/auth/ForgotPassword.jsx';
+import CreateNewPassword from './views/auth/CreateNewPassword.jsx';
+import PublicOnly from './layouts/PublicOnlyRoute.jsx';
+import UserDashboard from "./views/user/UserDashboard.jsx";
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
 
+function App() {
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <BrowserRouter>
+    <MainWrapper>
+      <Routes>
+
+        {/* Authentication */}
+        <Route path="/register/" element = {<PublicOnly children={<Register/>}/> }/>
+        <Route path="/login/" element = {<PublicOnly children={<Login/>}/> }/>
+        <Route path="/logout/" element = {<PrivateRoute children={<Logout/>}/>}/>
+        <Route path="/forgot-password/" element = {<PublicOnly children={ <ForgotPassword/>}/>}/>
+        <Route path="/create-new-password/" element = {<PublicOnly children={<CreateNewPassword/>}/> }/> 
+
+        {/* Dashboard */}
+        <Route path="/" element={<Navigate to="/user/dashboard/"/>}/>
+        <Route path="/user/dashboard/" element = {<PrivateRoute children={<UserDashboard/>}/>}/>
+
+
+      </Routes>
+    </MainWrapper>
+    
+    </BrowserRouter>
   )
 }
 
