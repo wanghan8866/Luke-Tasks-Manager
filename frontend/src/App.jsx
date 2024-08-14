@@ -7,7 +7,7 @@ import Logout from './views/auth/Logout.jsx';
 import ForgotPassword from './views/auth/ForgotPassword.jsx';
 import CreateNewPassword from './views/auth/CreateNewPassword.jsx';
 import PublicOnly from './layouts/PublicOnlyRoute.jsx';
-import UserDashboard from "./views/user/UserDashboard.jsx";
+import UserDashboard from "./views/user/page/UserDashboard.jsx";
 import './App.css'
 
 
