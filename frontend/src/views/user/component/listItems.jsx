@@ -16,13 +16,13 @@ import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton>
+    <ListItemButton href='/'>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton href='/user/dashboard/task-create/'>
       <ListItemIcon>
         <AddTaskIcon />
       </ListItemIcon>

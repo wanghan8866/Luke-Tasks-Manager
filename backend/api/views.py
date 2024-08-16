@@ -101,11 +101,21 @@ class PasswordChangeAPIView(generics.CreateAPIView):
             return Response({"Message":"Password changed successfully!"}, status=status.HTTP_201_CREATED)
         else:
             return Response({"Message":"User Does Not Exists!"}, status=status.HTTP_404_NOT_FOUND)
-        
 
-# For Tasks
 
-    
+# for Users
+
+class AllUserEmails(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *arg, **kwargs):
+        users = User.objects.all()
+        emails = [user.email for user in users]
+        return Response({"emails":emails})
+
+
+
+# For Tasks  
 
 class UserSummaryAPIView(generics.ListAPIView):
     """Get essentail summary of Tasks for a user"""
@@ -152,7 +162,25 @@ class TaskCreateAPIView(generics.CreateAPIView):
     #     teacher_id = self.kwargs['teacher_id']
     #     teacher = api_models.Teacher.objects.get(id=teacher_id)
     #     return api_models.Notification.objects.filter(teacher=teacher, seen=False)
+
+class TaskCreateWithEmailAPIView(generics.CreateAPIView):
+    """Create a task with user email"""
+    queryset = api_models.Task.objects.all()
+    serializer_class = api_serializer.TaskSerializer
+    permission_classes = [AllowAny]
+
+    def perform_create(self, serializer):
+        # Get the user email from the request data
+        user_email = self.request.data.get('user_email')
+
+
+        user = User.objects.get(email=user_email)
     
+        # Save the task with the user assigned to it
+        serializer.save(user=user)
+
+
+
 
 
 class TaskUpdateAPIView(generics.RetrieveUpdateAPIView):
@@ -166,6 +194,40 @@ class TaskUpdateAPIView(generics.RetrieveUpdateAPIView):
         task_id = self.kwargs['task_id']
         task = api_models.Task.objects.get(id = task_id)
         return task
+    
+class TaskUpdateWithEmailAPIView(generics.RetrieveUpdateAPIView):
+    """Update a task from a user"""
+    queryset = api_models.Task.objects.all()
+    serializer_class = api_serializer.TaskSerializer
+    permission_classes = [AllowAny]
+    
+
+    def get_object(self):
+        task_id = self.kwargs['task_id']
+        task = api_models.Task.objects.get(id = task_id)
+        return task
+    
+    def update(self, request, *args, **kwargs):
+        # Retrieve the task object
+        task = self.get_object()
+
+        # Get the email from the request data
+        user_email = request.data.get('user_email', None)
+        if user_email:
+            try:
+                # Retrieve the user based on the email
+                user = User.objects.get(email=user_email)
+                # Assign the user to the task
+                task.user = user
+            except User.DoesNotExist:
+                return Response({"error": "User with this email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Use the serializer to update the task
+        serializer = self.get_serializer(task, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
 
 class TaskDetailAPIView(generics.RetrieveAPIView):
     """Get a task and all its ToDos from a user"""
@@ -216,6 +278,17 @@ class UserToDoListAPIView(generics.ListAPIView):
         user_id = self.kwargs['user_id']
         user =  User.objects.get(id=user_id)
         return api_models.ToDo.objects.filter(task__user = user)
+    
+class TaskToDoListAPIView(generics.ListAPIView):
+    """Show All ToDo for a task"""
+    serializer_class = api_serializer.ToDoSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        task_id = self.kwargs['task_id']
+        task =  api_models.Task.objects.get(id=task_id)
+        return api_models.ToDo.objects.filter(task = task)
+    
 
 class ToDoCreateAPIView(generics.CreateAPIView):
     """Create a new ToDo for a task"""
@@ -273,7 +346,21 @@ class TaskToDoCompletedCreateAPIView(generics.UpdateAPIView):
         todo = self.get_object()
         todo.isFinished = True
         todo.save()
-        return Response({'message': 'Task marked as finished.'}, status=status.HTTP_200_OK)
+        return Response({'message': 'ToDo marked as finished.'}, status=status.HTTP_200_OK)
+    
+class TaskToDoCompletedAllCreateAPIView(APIView):
+    """Mark complete on a ToDo for a task"""
+    permission_classes = [AllowAny]
+
+
+    def post(self, request, *args, **kwargs):
+        task_id = self.kwargs['task_id']
+
+        task = api_models.Task.objects.get(id=task_id)
+        todos = api_models.ToDo.objects.filter(task=task)
+        updated_count = todos.update(isFinished=True)
+
+        return Response({'message': f'{updated_count} ToDos marked as finished.'}, status=status.HTTP_200_OK)
     
 
 class TestCreateRandomTasksAndToDos(APIView):

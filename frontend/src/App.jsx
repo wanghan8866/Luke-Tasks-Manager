@@ -8,7 +8,9 @@ import ForgotPassword from './views/auth/ForgotPassword.jsx';
 import CreateNewPassword from './views/auth/CreateNewPassword.jsx';
 import PublicOnly from './layouts/PublicOnlyRoute.jsx';
 import UserDashboard from "./views/user/page/UserDashboard.jsx";
+import TaskDashboard from './views/user/page/TaskDashboard.jsx';
 import './App.css'
+import TaskCreateDashboard from './views/user/page/TaskCreateDashboard.jsx';
 
 
 function App() {
@@ -27,6 +29,8 @@ function App() {
         {/* Dashboard */}
         <Route path="/" element={<Navigate to="/user/dashboard/"/>}/>
         <Route path="/user/dashboard/" element = {<PrivateRoute children={<UserDashboard/>}/>}/>
+        <Route path="/user/dashboard/task/:task_id/" element = {<PrivateRoute children={<TaskDashboard/>}/>}/>
+        <Route path="/user/dashboard/task-create/" element = {<PrivateRoute children={<TaskCreateDashboard/>}/>}/>
 
 
       </Routes>

@@ -9,7 +9,7 @@ function createData(time, amount) {
   return { time, amount: amount ?? null };
 }
 
-const data = [
+const default_data = [
   createData('00:00', 0),
   createData('03:00', 300),
   createData('06:00', 600),
@@ -21,7 +21,20 @@ const data = [
   createData('24:00'),
 ];
 
-export default function Chart() {
+export default function Chart(tasks_data) {
+  var data = tasks_data.tasks_data;
+  // console.log("Chart task data",tasks_data , tasks_data.tasks_data.length);
+  if (data.length===0){
+    data = default_data;
+    return (<></>);
+  }
+  // console.log("Chart task data After",tasks_data);
+  const maxTaskCount = data.reduce((max, task) => {
+    return task.amount > max.amount ? task : max;
+  }, data[0]);
+
+  // console.log("Chart task data After",maxTaskCount.amount);
+
   const theme = useTheme();
 
   return (
@@ -52,7 +65,8 @@ export default function Chart() {
                 fill: theme.palette.text.primary,
               },
               tickLabelStyle: theme.typography.body2,
-              max: 2500,
+              min: 0,
+              max: maxTaskCount.amount+1,
               tickNumber: 3,
             },
           ]}

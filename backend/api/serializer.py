@@ -57,12 +57,21 @@ class ToDoSerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     todos = ToDoSerializer(many=True, read_only=True,)
+    user_email = serializers.SerializerMethodField()
+
     class Meta:
         model = Task
-        fields = ["user", "task_title", "task", "due_by", "created_datetime", "priority", "is_urgent", "todos"]
+        fields = ["id","user", "user_email", "task_title", "task", "due_by", "created_datetime", "priority", "is_urgent", "todos"]
 
+    def get_user_email(self, obj):
+        return obj.user.email if obj.user else None
+    
 class TaskSummarySerializer(serializers.ModelSerializer):
     todos = ToDoSerializer(many=True, read_only=True,)
+    user_email = serializers.SerializerMethodField()
     class Meta:
         model = Task
-        fields = ["user", "task_title", "task", "due_by", "created_datetime", "priority", "is_urgent", "todos", "progress", "status"]
+        fields = ["id","user","user_email", "task_title", "task", "due_by", "created_datetime", "priority", "is_urgent", "todos", "progress", "status"]
+
+    def get_user_email(self, obj):
+        return obj.user.email if obj.user else None
