@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
-import { LineChart, axisClasses, PieChart } from '@mui/x-charts';
+import { LineChart, axisClasses, PieChart, pieArcLabelClasses  } from '@mui/x-charts';
 
 import Title from './Title';
 
@@ -21,11 +21,19 @@ const priority_map = {
   3: "Low"
 }
 
-export default function CustomPieChart(tasks_data) {
 
+export default function CustomPieChart(tasks_data) {
+  const theme = useTheme();
+  const palette = [
+    null,
+    theme.palette.warning.light, 
+    theme.palette.primary.light, 
+    theme.palette.success.light];
+  var value_sum = 0;
   var data = Object.entries(tasks_data.tasks_data).map(([key, value])=>{
     // console.log(key,value);
-    return { id: key, value: value, label: priority_map[key] }
+    value_sum += value;
+    return { id: key, value: value, label: priority_map[key], color: palette[key] }
   })
 
   // var data = tasks_data.tasks_data;
@@ -40,9 +48,7 @@ export default function CustomPieChart(tasks_data) {
   // console.log("Chart task data After",data);
 
 
-  // console.log("Chart task data After",maxTaskCount.amount);
 
-  const theme = useTheme();
   return (
     <React.Fragment>
       <Title>Today</Title>
@@ -52,8 +58,20 @@ export default function CustomPieChart(tasks_data) {
           series={[
             {
               data: data,
+              arcLabel: (item) => `${item.label} (${ Math.round(item.value/value_sum*100)}%)`,
+              arcLabelMinAngle: 45,
+              highlightScope: {
+                highlighted: 'item',
+                faded: 'global' 
+              },
             },
           ]}
+          sx={{
+            [`& .${pieArcLabelClasses.root}`]: {
+              fill: 'white',
+              fontWeight: 'bold',
+            },
+          }}
           width={270}
           height={270} // Make the chart a perfect square for better balance
           slotProps={{

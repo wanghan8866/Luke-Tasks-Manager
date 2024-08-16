@@ -16,6 +16,8 @@ import UserData from '../../plugin/UserData';
 import CustomPieChart from '../component/CustomPieChart';
 import TaskDetailCard from '../component/TaskDetailCard';
 import TasksTable from '../component/TasksTable';
+// import MultiLineBarChart from '../component/MultiLineBarChart';
+import MultiLineChart from '../component/MultiLineChart';
 
 function Copyright(props) {
     return (
@@ -110,8 +112,8 @@ export default function Dashboard() {
       
       
       // 1: Get today's date and the date next coming days from today
-      const today = new Date();
-      const in30Days = new Date(today);
+      var today = new Date();
+      var in30Days = new Date(today);
       in30Days.setDate(in30Days.getDate() + upComingDays);
       
 
@@ -123,6 +125,18 @@ export default function Dashboard() {
       
       const tasksWithin30Days = tasks.filter(task => {
         const taskDate = new Date(task.due_by);
+        
+        if(isInlucdeAllTime){
+          if(taskDate<today){
+            today = taskDate;
+            // console.log("filter", taskDate.toISOString());
+          }
+          if(in30Days< taskDate){
+            in30Days= taskDate;
+            // console.log("filter", taskDate.toISOString());
+          }
+        }
+
         return (isInlucdeAllTime || (taskDate >= today && taskDate <= in30Days)) && (!isOnlyIncludeYou || user.user_id === task.user) ;
       });
 
@@ -136,16 +150,45 @@ export default function Dashboard() {
       const taskCountsByPriority = {};
       const urgentTaskCounter = {completed:0, total:0};
       const upComingTaskCounter = {completed:0, total:0};
+      
+
+      today.setHours(0, 0, 0, 0);
+      in30Days.setHours(0, 0, 0, 0);
+      console.log("today", today.toISOString());
+      console.log("in30Days", in30Days.toISOString());
+      for (let d = today; d <= in30Days; d.setDate(d.getDate() + 1)) {
+        const formattedDate = new Date(d).toISOString().split('T')[0];
+        // console.log("set", formattedDate, d);
+        
+
+        taskCounts[formattedDate] = {total: 0, urgent: 0, urgent_completed:0, completed: 0}; // Initialize with a value of 0 or any other default value
+      }
 
       tasksWithin30Days.forEach(task => {
         const dueDate = new Date(task.due_by).toISOString().split('T')[0];
 
+        // console.log(dueDate, taskCounts[dueDate]);
+          if(!taskCounts[dueDate]){
+            taskCounts[dueDate] = {total: 0, urgent: 0, urgent_completed:0, completed: 0}; 
+          }
+          
+          taskCounts[dueDate].total+=1;
+          if(task.is_urgent){
+            taskCounts[dueDate].urgent+=1;
+          }
+          if(task.status==="Finished"){
+            taskCounts[dueDate].completed+=1;
+            if(task.is_urgent){
+              taskCounts[dueDate].urgent_completed+=1;
+            }
+          }
         
-        if(taskCounts[dueDate]){
-          taskCounts[dueDate]++;
-        }else{
-          taskCounts[dueDate]=1;
-        }
+          
+          
+        
+    
+
+        
 
         if(taskCountsByPriority[task.priority]){
           taskCountsByPriority[task.priority]++;
@@ -176,7 +219,7 @@ export default function Dashboard() {
 
       // 4: Reformat the counts into what line chart accept 
       function createData(time, amount) {
-        return { time, amount: amount ?? null };
+        return { time,  ...amount ?? null };
       }
       const t =Object.entries(taskCounts).map(([date, count])=>{
         return createData(date, count);
@@ -243,6 +286,7 @@ export default function Dashboard() {
         control={<Checkbox checked={isInlucdeAllTime} onClick={() => setIsInlucdeAllTime(!isInlucdeAllTime)} />}
         label="Include All Time"
       />
+      
 
       {!isInlucdeAllTime && (
         <Box sx={{ width: 300, display: 'flex', alignItems: 'center' }}>
@@ -309,30 +353,31 @@ export default function Dashboard() {
 
 
                 {/* Line Chart */}
-                <Grid item xs={12} md={8} lg={8}>
+                <Grid item xs={12} md={9} lg={9}>
                     <Paper
                     sx={{
                         p: 2,
                         display: 'flex',
                         flexDirection: 'column',
-                        height: 340,
+                        height: 500,
                     }}
                     >
 
-                {numberOfTaskInDays && <Chart tasks_data={numberOfTaskInDays}/>}
+                {/* {numberOfTaskInDays && <Chart tasks_data={numberOfTaskInDays}/>} */}
+                {numberOfTaskInDays[0] && <MultiLineChart tasks_data={numberOfTaskInDays}/>}
 
                     </Paper>
 
                     {/* Pie Chart */}
                 </Grid>
     
-                <Grid item xs={12} md={4} lg={4}>
+                <Grid item xs={12} md={3} lg={3}>
                     <Paper
                     sx={{
                         p: 2,
                         display: 'flex',
                         flexDirection: 'column',
-                        height: 340,
+                        height: 400,
                     }}
                     >
                        {numberOfTaskByPriority && <CustomPieChart tasks_data={numberOfTaskByPriority}/>}
@@ -343,7 +388,7 @@ export default function Dashboard() {
              {/* Table View */}
                 <Grid item xs={12}>
                   
-                  {selectedTasks && <TasksTable tasks={selectedTasks} onUpdate={updateTaskFromTasks} onDelete={deleteTaskFromTasks}/>}
+                  {/* {selectedTasks && <TasksTable tasks={selectedTasks} onUpdate={updateTaskFromTasks} onDelete={deleteTaskFromTasks}/>} */}
           
 
                 </Grid>

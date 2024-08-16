@@ -428,7 +428,7 @@ return (
       boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' // Subtle shadow for depth
     }}>
       <CardContent>
-        <h2>{task.id}</h2>
+        {/* <h2>{task.id}</h2> */}
         {isEditing
 
         ?(        <Select
@@ -570,7 +570,7 @@ return (
         color="textSecondary" 
         gutterBottom
         sx={{
-            backgroundColor: user.email === pseudo_task.user_email ? '#f0f4c3' : '#ffcccb', // Light green for current user, light red for others
+            backgroundColor: user?.email === pseudo_task?.user_email ? '#f0f4c3' : '#ffcccb', // Light green for current user, light red for others
             padding: '4px 8px', // Add some padding around the text
             borderRadius: '4px', // Optional: Add rounded corners
             display: 'inline-block', // Keep the background confined to the text

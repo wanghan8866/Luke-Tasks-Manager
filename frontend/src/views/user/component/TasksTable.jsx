@@ -23,7 +23,7 @@ export default function TasksTable(props){
                <Grid container spacing={2}>
           {tasks.map((task, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
-                <h1>{task.id}</h1>
+                {/* <h1>{task.id}</h1> */}
                 <TaskDetailCard task={task} onUpdate={onUpdate} onDelete={onDelete}/>
        
             </Grid>

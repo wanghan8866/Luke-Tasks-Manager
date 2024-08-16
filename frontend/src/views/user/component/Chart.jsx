@@ -59,7 +59,7 @@ export default function Chart(tasks_data) {
           ]}
           yAxis={[
             {
-              label: 'Sales ($)',
+              label: 'Tasks',
               labelStyle: {
                 ...theme.typography.body1,
                 fill: theme.palette.text.primary,
@@ -72,7 +72,7 @@ export default function Chart(tasks_data) {
           ]}
           series={[
             {
-              dataKey: 'amount',
+              dataKey: 'total',
               showMark: false,
               color: theme.palette.primary.light,
             },
