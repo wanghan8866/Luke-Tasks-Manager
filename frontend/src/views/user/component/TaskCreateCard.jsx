@@ -67,21 +67,21 @@ const TaskCreateCard = () => {
 
     const handleEditPost = ()=>{
 
-        console.log("Handle Edit!");
+        // console.log"Handle Edit!");
         setIsEditing(true);
         
         try{
             axios
             .get(`user/emails-all/`)
             .then((res) => {
-            //   console.log(res.data);
+            //   // console.logres.data);
 
               setEmails(res.data.emails);
             //   setTask(res.data);
             });
            
         }catch(error){
-            // console.log(error);
+            // // console.logerror);
             alert(error);
         }
 
@@ -89,7 +89,7 @@ const TaskCreateCard = () => {
 
     const handleUpdatePost = async ()=>{
 
-        console.log("Handle Update!");
+        // console.log"Handle Update!");
         // setIsEditing(false);
 
 
@@ -107,7 +107,7 @@ const TaskCreateCard = () => {
 
             const response_ = await axios.post("user/task-create-email/", formdata)
        
-            console.log("Create task",response_.data);
+            // console.log"Create task",response_.data);
             // setTask(response_.data);
 
             toDos.forEach((todo)=>{
@@ -121,7 +121,7 @@ const TaskCreateCard = () => {
                     axios
                     .post(`user/todo-create/`, formToDO)
                     .then((res_todo) => {
-                      console.log("Update toDo",res_todo.data);
+                      // console.log"Update toDo",res_todo.data);
                       // setToDos(res.data);
                       
                
@@ -139,12 +139,12 @@ const TaskCreateCard = () => {
 
               
               )
-              // console.log("Navigate!");
+              // // console.log"Navigate!");
               navigate(`/user/dashboard/task/${response_.data.id}/`);
   
            
         }catch(error){
-            // console.log(error);
+            // // console.logerror);
             alert(error);
         }
 
@@ -153,7 +153,7 @@ const TaskCreateCard = () => {
 
 
     const handleDeleteToDo = (todo)=>{
-        console.log("Handle Delete toDo!");
+        // console.log"Handle Delete toDo!");
         try{
           setToDos(prevTodos => prevTodos.filter(todo_x => todo_x.title !== todo.title));
         }
@@ -165,8 +165,8 @@ const TaskCreateCard = () => {
     }
 
     const handleCreateToDo=()=>{
-        console.log(newTodo);
-        console.log(toDos);
+        // console.lognewTodo);
+        // console.logtoDos);
 
         const formdata = {
           title: newTodo,
@@ -195,10 +195,10 @@ const TaskCreateCard = () => {
         //     axios
         //     .post(`user/todo-create/`, formdata)
         //     .then((res) => {
-        //     //   console.log("Update toDo",res.data);
+        //     //   // console.log"Update toDo",res.data);
         //       axios
         //       .get(`user/todo-lists-task/${task.id}/`).then((res)=>{
-        //         // console.log("updated todos", res.data);
+        //         // // console.log"updated todos", res.data);
         //         setToDos(res.data);
         //         setNewTodo("");
         //       });
@@ -220,7 +220,7 @@ const TaskCreateCard = () => {
     const handleStatusUpdate = (status)=>{
 
         setTaskStatus(status);
-        console.log(status);
+        // console.logstatus);
         
         const [firstPart, ...rest] = status.split(" ");
 
@@ -243,7 +243,7 @@ const TaskCreateCard = () => {
     // Old, Upcoming
     // Urgent, High Priority , Normal, Low
     const showTaskStatus = ()=>{
-        // console.log(task);
+        // // console.logtask);
         
         const taskDate = new Date(task.due_by);
         const today = new Date();
@@ -324,7 +324,7 @@ const TaskCreateCard = () => {
 
 
 
-    // console.log("TaskDetailCard", task.todos);
+    // // console.log"TaskDetailCard", task.todos);
 
 
   const subtasks = [
@@ -454,7 +454,7 @@ return (
             value={task.user_email}
             onChange={
                 (e, value) => {
-                    // console.log("e", e.target.value, value);
+                    // // console.log"e", e.target.value, value);
                     setTask(
                 {...task, user_email:value})}}
             // onBlur={handleTitleSave} // Save title on blur (clicking away)
@@ -468,7 +468,7 @@ return (
             }}
             renderInput={
                 (params) => {
-                    // console.log(emails);
+                    // // console.logemails);
                     
                     return (
                     <TextField
@@ -526,7 +526,7 @@ return (
         //   const taskDate = new Date(task.due_by);
           value = {dayjs(task.due_by)}
           onChange={(e)=>{
-            // console.log(e.toISOString());
+            // // console.loge.toISOString());
             setTask({...task, due_by:e.toISOString()})}}
         //   renderInput={(params) => <TextField {...params} fullWidth />}
           />

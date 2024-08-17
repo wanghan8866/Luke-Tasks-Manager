@@ -43,19 +43,19 @@ export default function ForgotPassword() {
     setIsLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-    });
+    // console.log{
+    //   email: data.get('email'),
+    // });
     const email = data.get('email');
 
     try {
         await apiInstance.get(`user/password-reset/${email}/`).then((res) => {
-          console.log(res.data);
+          // console.logres.data);
           setIsLoading(false);
           alert("Password Reset Email Sent");
         });
       } catch (error) {
-        console.log("error: ", error);
+        // console.log"error: ", error);
         setIsLoading(false);
       }
   };

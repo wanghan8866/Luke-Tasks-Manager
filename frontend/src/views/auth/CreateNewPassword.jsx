@@ -49,10 +49,10 @@ export default function CreateNewPassword() {
     setIsLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-        password: data.get('password'),
-      password2: data.get('password2'),
-    });
+    // console.log{
+    //     password: data.get('password'),
+    //   password2: data.get('password2'),
+    // });
     const password = data.get('password');
     const password2 = data.get('password');
 
@@ -70,14 +70,14 @@ export default function CreateNewPassword() {
           await apiInstance
             .post(`user/password-change/`, formdata)
             .then((res) => {
-              console.log(res.data);
+              // console.logres.data);
             //   alert()
               setIsLoading(false);
               navigate("/login/");
               alert(res.data.Message)
             });
         } catch (error) {
-          console.log(error);
+          // console.logerror);
           setIsLoading(false);
         }
       }

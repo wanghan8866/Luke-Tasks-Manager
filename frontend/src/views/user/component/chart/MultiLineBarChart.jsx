@@ -18,7 +18,7 @@ import { useTheme } from '@emotion/react';
 export default function MultiLineBarChart(props) {
   const [isResponsive, setIsResponsive] = React.useState(true);
   const theme = useTheme(); 
-//   console.log(props.tasks_data);
+//   // console.logprops.tasks_data);
   const Container = isResponsive ? ResponsiveChartContainer : ChartContainer;
   const sizingProps = isResponsive ? {} : { width: 500, height: 300 };
   return (

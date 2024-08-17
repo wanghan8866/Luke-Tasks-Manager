@@ -39,7 +39,7 @@ const TaskDetailCard = (props) => {
       deleteTaskFromTasks(task_id, updated_task);
       navigate("/");
     }
-    // console.log("taskcard", task);
+    // // console.log"taskcard", task);
     
     // const task = props.task;
 
@@ -81,10 +81,10 @@ const TaskDetailCard = (props) => {
             useAxios()
             .put(`user/todo-update/${todo.id}/`, formdata)
             .then((res) => {
-            //   console.log("Update toDo",res.data);
+            //   // console.log"Update toDo",res.data);
                     useAxios()
                     .get(`user/todo-lists-task/${task.id}/`).then((res)=>{
-                    // console.log("updated todos", res.data);
+                    // // console.log"updated todos", res.data);
                     // setToDos(res.data);
                     onUpdate(task.id, {...task, todos: res.data});
                     // setNewTodo("");
@@ -93,28 +93,28 @@ const TaskDetailCard = (props) => {
             });
            
         }catch(error){
-            // console.log(error);
+            // // console.logerror);
             alert(error);
         }
     };
 
     const handleEditPost = ()=>{
 
-        // console.log("Handle Edit!");
+        // // console.log"Handle Edit!");
         setIsEditing(true);
         
         try{
             useAxios()
             .get(`user/emails-all/`)
             .then((res) => {
-            //   console.log(res.data);
+            //   // console.logres.data);
 
               setEmails(res.data.emails);
             //   setTask(res.data);
             });
            
         }catch(error){
-            // console.log(error);
+            // // console.logerror);
             alert(error);
         }
 
@@ -122,7 +122,7 @@ const TaskDetailCard = (props) => {
 
     const handleUpdatePost = ()=>{
 
-        // console.log("Handle Update!");
+        // // console.log"Handle Update!");
         setIsEditing(false);
 
 
@@ -141,15 +141,15 @@ const TaskDetailCard = (props) => {
             useAxios()
             .put(`user/task-update-email/${task.id}/`, formdata)
             .then((res) => {
-            //   console.log("Update task",res.data);
+            //   // console.log"Update task",res.data);
               onUpdate(pseudo_task.id, pseudo_task);
 
-            //   console.log("Update", task, pseudo_task);
+            //   // console.log"Update", task, pseudo_task);
               
             });
            
         }catch(error){
-            // console.log(error);
+            // // console.logerror);
             alert(error);
         }
 
@@ -168,11 +168,11 @@ const TaskDetailCard = (props) => {
             useAxios()
             .post(`user/todo-all-completed/${task.id}/`, formdata)
             .then((res) => {
-            //   console.log("Update toDo",res.data);
+            //   // console.log"Update toDo",res.data);
 
               useAxios()
               .get(`user/todo-lists-task/${task.id}/`).then((res)=>{
-                // console.log("updated todos", res.data);
+                // // console.log"updated todos", res.data);
                 // setToDos(res.data);
                 onUpdate(task.id, {...task, todos: res.data});
                 // setNewTodo("");
@@ -181,7 +181,7 @@ const TaskDetailCard = (props) => {
             });
            
         }catch(error){
-            // console.log(error);
+            // // console.logerror);
             alert(error);
         }
     }
@@ -194,12 +194,12 @@ const TaskDetailCard = (props) => {
         
     }
     const handleConfirmDelete = ()=>{
-        // console.log(`Handle Delete ${task.id}!`);
+        // // console.log`Handle Delete ${task.id}!`);
         try{
             useAxios()
             .delete(`user/task-delete/${task.id}/`)
             .then((res) => {
-            //   console.log("Delete toDo",res.data);
+            //   // console.log"Delete toDo",res.data);
               alert(`Task <id:${task.id}> has been deleted!`);
               onDelete(task.id);
             //   navigate("/");
@@ -217,17 +217,17 @@ const TaskDetailCard = (props) => {
 
 
     const handleDeleteToDo = (todo_id)=>{
-        // console.log("Handle Delete toDo!");
+        // // console.log"Handle Delete toDo!");
         try{
             useAxios()
             .delete(`user/todo-delete/${todo_id}/`)
             .then((res) => {
-            //   console.log("Delete toDo",res.data);
+            //   // console.log"Delete toDo",res.data);
               alert(`ToDo <id:${todo_id}> has been deleted!`);
     
               useAxios()
               .get(`user/todo-lists-task/${task.id}/`).then((res)=>{
-                // console.log("updated todos", res.data);
+                // // console.log"updated todos", res.data);
                 // setToDos(res.data);
                 onUpdate(task.id, {...task, todos: res.data});
                 // setNewTodo("");
@@ -244,8 +244,8 @@ const TaskDetailCard = (props) => {
     }
 
     const handleCreateToDo=()=>{
-        // console.log(newTodo);
-        // console.log(toDos);
+        // // console.lognewTodo);
+        // // console.logtoDos);
 
         const formdata = new FormData();
         formdata.append("title", newTodo);
@@ -256,10 +256,10 @@ const TaskDetailCard = (props) => {
             useAxios()
             .post(`user/todo-create/`, formdata)
             .then((res) => {
-            //   console.log("Update toDo",res.data);
+            //   // console.log"Update toDo",res.data);
               useAxios()
               .get(`user/todo-lists-task/${task.id}/`).then((res)=>{
-                // console.log("updated todos", res.data);
+                // // console.log"updated todos", res.data);
                 // setToDos(res.data);
                 setNewTodo("");
                 onUpdate(task.id, {...task, todos: res.data});
@@ -282,7 +282,7 @@ const TaskDetailCard = (props) => {
     const handleStatusUpdate = (status)=>{
 
         setTaskStatus(status);
-        // console.log(status);
+        // // console.logstatus);
         
         const [firstPart, ...rest] = status.split(" ");
 
@@ -307,7 +307,7 @@ const TaskDetailCard = (props) => {
     // Old, Upcoming
     // Urgent, High Priority , Normal, Low
     const showTaskStatus = ()=>{
-        // console.log(task);
+        // // console.logtask);
         
         const taskDate = new Date(task.due_by);
         const today = new Date();
@@ -403,7 +403,7 @@ const TaskDetailCard = (props) => {
     }, [task]);
 
     // useEffect(
-    //     ()=>{console.log("Card", task)},
+    //     ()=>{// console.log"Card", task)},
     //     [task]
 
     // )
@@ -411,7 +411,7 @@ const TaskDetailCard = (props) => {
 
 
 
-    // console.log("TaskDetailCard", task.todos);
+    // // console.log"TaskDetailCard", task.todos);
 
 
   const subtasks = [
@@ -542,7 +542,7 @@ return (
             value={pseudo_task.user_email}
             onChange={
                 (e, value) => {
-                    // console.log("e", e.target.value, value);
+                    // // console.log"e", e.target.value, value);
                     setPseudoTask( 
                 {...pseudo_task, user_email:value})}}
             // onBlur={handleTitleSave} // Save title on blur (clicking away)
@@ -556,7 +556,7 @@ return (
             }}
             renderInput={
                 (params) => {
-                    // console.log(emails);
+                    // // console.logemails);
                     
                     return (
                     <TextField
@@ -614,7 +614,7 @@ return (
         //   const taskDate = new Date(task.due_by);
           value = {dayjs(pseudo_task.due_by)}
           onChange={(e)=>{
-            // console.log(e.toISOString());
+            // // console.loge.toISOString());
             setPseudoTask({...pseudo_task, due_by:e.toISOString()})}}
         //   renderInput={(params) => <TextField {...params} fullWidth />}
           />

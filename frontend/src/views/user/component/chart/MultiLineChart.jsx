@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { ChartContainer } from '@mui/x-charts/ChartContainer';
-import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
+// import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
 import { barElementClasses, BarPlot } from '@mui/x-charts/BarChart';
 import { LinePlot, MarkPlot } from '@mui/x-charts/LineChart';
 import { ChartsXAxis } from '@mui/x-charts/ChartsXAxis';
@@ -17,6 +17,7 @@ import { useTheme } from '@emotion/react';
 import { axisClasses } from '@mui/x-charts';
 import { alpha } from '@mui/material/styles';
 import { useDrawingArea } from '@mui/x-charts/hooks';
+import { ResponsiveChartContainer } from '@mui/x-charts';
 // import linearGradient
 import { LineChart, lineElementClasses } from '@mui/x-charts/LineChart';
 import Title from '../Title';
@@ -51,17 +52,20 @@ const Colorswitch = () => {
 export default function MultiLineChart(props) {
   const [isResponsive, setIsResponsive] = React.useState(true);
   const theme = useTheme(); 
-  // console.log(props.tasks_data);
-//   console.log(props.tasks_data);
-//   console.log(props.tasks_data?.map((item)=>item.time));
+  // // console.logprops.tasks_data);
+//   // console.logprops.tasks_data);
+//   // console.logprops.tasks_data?.map((item)=>item.time));
   // const Container = isResponsive ? ResponsiveChartContainer : ChartContainer;
   const sizingProps = isResponsive ? {} : { width: 500, height: 300 };
   return (
     <React.Fragment>
     <Title>Upcoming Tasks</Title>
-    <div style={{ width: '100%', flexGrow: 1, overflow: 'hidden' }}>
+    <div style={{ width: "100%", display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', flexGrow: 1, overflow: 'hidden' }}>
+
+
       <LineChart
-      {...sizingProps}
+        // width={500}
+        // height={300}
         dataset={props.tasks_data}
         margin={{
           top: 16,
@@ -137,8 +141,8 @@ export default function MultiLineChart(props) {
              <Colorswitch />
         </LineChart>
 
-
-            </div>
+        </div>
+           
   </React.Fragment>
 );
 

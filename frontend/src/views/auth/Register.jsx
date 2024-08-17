@@ -48,12 +48,12 @@ const navigate = useNavigate();
     const password2 = data.get('password2');
 
     
-    console.log({
-        fullName: data.get('fullName'),
-        email: data.get('email'),
-        password: data.get('password'),
-        password2: data.get('password2')
-      });
+    // console.log{
+      //   fullName: data.get('fullName'),
+      //   email: data.get('email'),
+      //   password: data.get('password'),
+      //   password2: data.get('password2')
+      // });
 
     const {error} = await register(fullName, email, password, password2);
 

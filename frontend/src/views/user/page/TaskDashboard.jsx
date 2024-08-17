@@ -53,11 +53,11 @@ export default function TaskDashboard() {
 
 
 
-  // console.log("task: ", param.task_id, task);
+  // // console.log"task: ", param.task_id, task);
   
   
   
-  // console.log("hi");
+  // // console.log"hi");
   const findTask = ()=>{
     return tasks.length!=0?tasks.find(t=>t.id===parseInt(param.task_id)):{}
   }
@@ -66,20 +66,20 @@ export default function TaskDashboard() {
     const fetchTasksData =  () => {
       
       // tasks.forEach(task => {
-      //   console.log(task.id===param.task_id, task.id, parseInt(param.task_id));
+      //   // console.logtask.id===param.task_id, task.id, parseInt(param.task_id));
       // });
-      // console.log("tasks: ", findTask());
+      // // console.log"tasks: ", findTask());
 
         // try{
         //     useAxios()
         //     .get(`user/task-detail/${param.task_id}/`)
         //     .then((res) => {
-        //     //   console.log(res.data);
+        //     //   // console.logres.data);
         //       // setTask(res.data);
         //     });
            
         // }catch(error){
-        //     // console.log(error);
+        //     // // console.logerror);
         //     alert(error);
         // }
 

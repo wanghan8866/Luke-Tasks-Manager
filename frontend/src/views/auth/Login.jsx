@@ -35,8 +35,6 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Login() {
-    console.log(useAuthStore);
-    
 
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate();
@@ -46,10 +44,11 @@ export default function Login() {
     setIsLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    // console.log{
+      // email: data.get('email'),
+      // password: data.get('password'),
+    // }
+  // );
     const email = data.get('email');
     const password = data.get('password');
 
@@ -59,6 +58,7 @@ export default function Login() {
       alert(error);
     } else {
       navigate("/user/dashboard/");
+      window.location.reload();
       setIsLoading(false);
     }
   };

@@ -20,6 +20,8 @@ function App() {
     <MainWrapper>
       <Routes>
 
+        
+
         {/* Authentication */}
         <Route path="/register/" element = {<PublicOnly children={<Register/>}/> }/>
         <Route path="/login/" element = {<PublicOnly children={<Login/>}/> }/>
@@ -33,7 +35,9 @@ function App() {
         <Route path="/user/dashboard/task/:task_id/" element = {<PrivateRoute children={<TaskDashboard/>}/>}/>
         <Route path="/user/dashboard/task-create/" element = {<PrivateRoute children={<TaskCreateDashboard/>}/>}/>
 
-
+        
+        {/* Redirect all other paths to HomePage */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </MainWrapper>
     

@@ -23,17 +23,17 @@ const default_data = [
 
 export default function Chart(tasks_data) {
   var data = tasks_data.tasks_data;
-  // console.log("Chart task data",tasks_data , tasks_data.tasks_data.length);
+  // // console.log"Chart task data",tasks_data , tasks_data.tasks_data.length);
   if (data.length===0){
     data = default_data;
     return (<></>);
   }
-  // console.log("Chart task data After",tasks_data);
+  // // console.log"Chart task data After",tasks_data);
   const maxTaskCount = data.reduce((max, task) => {
     return task.amount > max.amount ? task : max;
   }, data[0]);
 
-  // console.log("Chart task data After",maxTaskCount.amount);
+  // // console.log"Chart task data After",maxTaskCount.amount);
 
   const theme = useTheme();
 

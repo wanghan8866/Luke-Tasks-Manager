@@ -1,5 +1,7 @@
 import React, {createContext, useState, useContext, useEffect} from "react";
 import useAxios from "../../../../utils/useAxios";
+import { useAuthStore } from "../../../../store/auth";
+import UserData from "../../../plugin/UserData";
 const TasksContext = createContext();
 
 export const useTasks = ()=>{
@@ -11,7 +13,7 @@ export const TaskProvider = ({children})=>{
 
     
     const updateTaskFromTasks=(task_id, updatedTask)=>{
-        console.log("updating User", updatedTask);
+        // // console.log"updating User", updatedTask);
         setTasks((prevTasks)=>
         prevTasks.map((task)=>
             task.id===task_id?{...task, ...updatedTask}:task)
@@ -25,14 +27,20 @@ export const TaskProvider = ({children})=>{
 
     
     const fetchTasksData =  () => {
-        useAxios()
-        .get(`user/task-all/`)
-        .then((res) => {
-          setTasks(res.data);
+        // // console.log"context", UserData()?.email );
+        if(UserData()?.email){
+            useAxios()
+            .get(`user/task-all/`)
+            .then((res) => {
+              setTasks(res.data);
+    
+              
+             
+            });
+        }
+        // // console.log"Hi fetchTasksData for context!");
 
-          
-         
-        });
+
       }
   
   
@@ -43,7 +51,7 @@ export const TaskProvider = ({children})=>{
       }, []);
 
     //   useEffect(() => {
-    //     console.log(tasks);
+    //     // console.logtasks);
     //   }, [tasks]);
 
 

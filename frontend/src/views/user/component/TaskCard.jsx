@@ -8,7 +8,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 // ----------------------------------------------------------------------
 
 export default function TaskCard({ title, total, progress = 70, color = 'primary', sx, ...other }) {
-    // console.log(total.completed/total.total);
+    // // console.logtotal.completed/total.total);
     
   return (
     <Card

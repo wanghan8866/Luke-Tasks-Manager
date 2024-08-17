@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 const useAxios = () => {
   const accessToken = Cookies.get("access_token");
   const refreshToken = Cookies.get("refresh_token");
-  console.log("Use useAxios!");
+  // console.log"Use useAxios!");
 
   const axiosInstance = axios.create({
     baseURL: API_BASE_URL,

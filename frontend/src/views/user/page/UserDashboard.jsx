@@ -51,10 +51,10 @@ export default function Dashboard() {
   const [allTasks, setAllTasks] = useState({completed:0, total: 0});
   const user = UserData();
   
-  // console.log("hi");
+  // // console.log"hi");
 
   // const updateTaskFromTasks=(task_id, updatedTask)=>{
-  //   // console.log("User", updatedTask);
+  //   // // console.log"User", updatedTask);
   //   setTasks((prevTasks)=>
   //     prevTasks.map((task)=>
   //       task.id===task_id?{...task, ...updatedTask}:task)
@@ -72,15 +72,15 @@ export default function Dashboard() {
     //   useAxios()
     //   .get(`user/task-all/`)
     //   .then((res) => {
-    //     // console.log(res.data);
-    //     // console.log(UserData());
-    //     // console.log(res.data);
+    //     // // console.logres.data);
+    //     // // console.logUserData());
+    //     // // console.logres.data);
     //     setTasks(res.data);
         
     //     // setNumberOfTaskInDays(res.data);
 
-    //     // console.log("user",numberOfTaskInDays);
-    //     // console.log("user",tasks);
+    //     // // console.log"user",numberOfTaskInDays);
+    //     // // console.log"user",tasks);
         
         
 
@@ -103,7 +103,7 @@ export default function Dashboard() {
       tasks.forEach(task => {
         if(!isOnlyIncludeYou || user.user_id === task.user){
           if(task.status === "Finished"){
-            // console.log("all",task.status);
+            // // console.log"all",task.status);
             
             totalTaskCounter.completed +=1;
           }
@@ -112,7 +112,7 @@ export default function Dashboard() {
 
       });
 
-      // console.log(task);
+      // // console.logtask);
       
       
       // 1: Get today's date and the date next coming days from today
@@ -133,11 +133,11 @@ export default function Dashboard() {
         if(isInlucdeAllTime){
           if(taskDate<today){
             today = taskDate;
-            // console.log("filter", taskDate.toISOString());
+            // // console.log"filter", taskDate.toISOString());
           }
           if(in30Days< taskDate){
             in30Days= taskDate;
-            // console.log("filter", taskDate.toISOString());
+            // // console.log"filter", taskDate.toISOString());
           }
         }
 
@@ -146,7 +146,7 @@ export default function Dashboard() {
 
       setSelectedTasks(tasksWithin30Days);
 
-      // console.log(tasksWithin30Days);
+      // // console.logtasksWithin30Days);
 
       
       // 3: count ammount of tasks in each day
@@ -161,7 +161,7 @@ export default function Dashboard() {
 
       for (let d = today; d <= in30Days; d.setDate(d.getDate() + 1)) {
         const formattedDate = new Date(d).toISOString().split('T')[0];
-        // console.log("set", formattedDate, d);
+        // // console.log"set", formattedDate, d);
         
 
         taskCounts[formattedDate] = {total: 0, urgent: 0, urgent_completed:0, completed: 0}; // Initialize with a value of 0 or any other default value
@@ -170,7 +170,7 @@ export default function Dashboard() {
       tasksWithin30Days.forEach(task => {
         const dueDate = new Date(task.due_by).toISOString().split('T')[0];
 
-        // console.log(dueDate, taskCounts[dueDate]);
+        // // console.logdueDate, taskCounts[dueDate]);
           if(!taskCounts[dueDate]){
             taskCounts[dueDate] = {total: 0, urgent: 0, urgent_completed:0, completed: 0}; 
           }
@@ -203,10 +203,10 @@ export default function Dashboard() {
 
           upComingTaskCounter.completed +=1;
           if(task.is_urgent){
-            // console.log("Urgent",task.status);
+            // // console.log"Urgent",task.status);
             urgentTaskCounter.completed +=1;
           }else{
-            // console.log("UpComing",task.status);
+            // // console.log"UpComing",task.status);
           }
         }
 
@@ -215,7 +215,7 @@ export default function Dashboard() {
         }
         upComingTaskCounter.total +=1;
 
-        // console.log(task.priority, task.is_urgent, task.status);
+        // // console.logtask.priority, task.is_urgent, task.status);
       });
 
 
@@ -232,7 +232,7 @@ export default function Dashboard() {
       // 5: Sort the days by date in ascending order 
       t.sort((a, b) =>
         { 
-          // console.log(a);
+          // // console.loga);
           return new Date(a.time) - new Date(b.time)});
 
       // 6: Save the data
@@ -242,7 +242,7 @@ export default function Dashboard() {
       setUpcomingTasks(upComingTaskCounter);
       setAllTasks(totalTaskCounter);
 
-      // console.log(taskCountsByPriority, urgentTaskCounter, upComingTaskCounter, totalTaskCounter);
+      // // console.logtaskCountsByPriority, urgentTaskCounter, upComingTaskCounter, totalTaskCounter);
       
 
 

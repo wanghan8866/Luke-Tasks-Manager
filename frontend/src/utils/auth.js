@@ -61,7 +61,10 @@ export const setUser = async () => {
 
   if (isAccessTokenExpired(access_token)) {
     const response = getRefreshedToken(refresh_token);
-    setAuthUser(response.access, response.refresh);
+    if(response){
+      setAuthUser(response.access, response.refresh);
+    }
+
   } else {
     setAuthUser(access_token, refresh_token);
   }
@@ -87,11 +90,17 @@ export const setAuthUser = (access_token, refresh_token) => {
 };
 
 export const getRefreshedToken = async () => {
+ 
   const refresh_token = Cookie.get("refresh_token");
-  const response = await axios.post(`user/token/refresh/`, {
-    refresh: refresh_token,
-  });
-  return response.data;
+
+  // console.log("refresh", refresh_token);
+  if(refresh_token){
+    const response = await axios.post(`user/token/refresh/`, {
+      refresh: refresh_token,
+    });
+    return response.data;
+  }
+
 };
 
 export const isAccessTokenExpired = (access_token) => {
@@ -99,7 +108,7 @@ export const isAccessTokenExpired = (access_token) => {
     const decodedToken = jwt_decode(access_token);
     return decodedToken.exp < Date.now() / 1000;
   } catch (error) {
-    console.log(error);
+    // console.logerror);
     return true;
   }
 };

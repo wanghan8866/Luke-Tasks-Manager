@@ -31,13 +31,13 @@ export default function CustomPieChart(tasks_data) {
     theme.palette.success.light];
   var value_sum = 0;
   var data = Object.entries(tasks_data.tasks_data).map(([key, value])=>{
-    // console.log(key,value);
+    // // console.logkey,value);
     value_sum += value;
     return { id: key, value: value, label: priority_map[key], color: palette[key] }
   })
 
   // var data = tasks_data.tasks_data;
-  // console.log("Chart task data",tasks_data , tasks_data.tasks_data.length);
+  // // console.log"Chart task data",tasks_data , tasks_data.tasks_data.length);
   if (data.length===0){
 
     data = default_data;
@@ -45,7 +45,7 @@ export default function CustomPieChart(tasks_data) {
   }
 
 
-  // console.log("Chart task data After",data);
+  // // console.log"Chart task data After",data);
 
 
 

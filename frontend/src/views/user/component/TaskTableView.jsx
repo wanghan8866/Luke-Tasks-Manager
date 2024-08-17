@@ -17,57 +17,65 @@ const priority_map = {
   
 const columns = [
   { id: 'task_title', label: 'Task Title', 
-    
+
     minWidth: 170 ,
-    format: (value)=>(<Link to={"/"}>{value}</Link>)
+    format: (value, id)=>(<Link to={`/user/dashboard/task/${id}`}>{value}</Link>)
 
 },
-  { id: 'user_email', label: 'User Email', minWidth: 100 },
+  { id: 'user_email', label: 'User Email', minWidth: 100,
+
+    format: (value, id)=>value
+   },
   {
     id: 'due_by',
     label: 'Due By',
     minWidth: 170,
     align: 'right',
-    format: (date) => formatDate(date),
+    format: (date, id) => formatDate(date),
   },
   {
     id: 'progress',
     label: 'Progress',
     minWidth: 170,
     align: 'right',
-    format: (value) => `${value*100}%`,
+    format: (value, id) => {
+      const numericValue = isNaN(value) ? 0 : parseFloat(value);
+      return `${Math.round(numericValue * 100)}%`;
+    },
   },
   {
     id: 'is_urgent',
     label: 'Is Urgent',
     minWidth: 170,
     align: 'right',
+    format: (value, id) => value?"Urgent":"Not Urgent",
   },
   {
     id: 'priority',
     label: 'Priority',
     minWidth: 170,
     align: 'right',
-    // format: (value) => value.toFixed(2),
+    format: (value, id) => priority_map[value],
   },
   {
     id: 'number_of_todos',
     label: 'Number of ToDos',
     minWidth: 170,
     align: 'right',
+    format: (value, id)=>value.toString()
     // format: (value) => value.toFixed(2),
   },
 ];
 
 function createData(task) {
   const num_todos = task.todos.length;
-//   console.log(task.is_urgent?"hi":"no");
+//   // console.logtask.is_urgent?"hi":"no");
   return { 
     task_id: task.id,
     task_title:task.task_title, user_email: task.user_email,
-    due_by:formatDate(task.due_by), progress: task.progress,
-     is_urgent: task.is_urgent?"Urgent":"Not Urgent",
-    priority:priority_map[task.priority],
+    due_by:task.due_by, progress: task.progress,
+     is_urgent: task.is_urgent,
+    priority:task.priority,
     number_of_todos:num_todos};
 }
 
@@ -98,6 +106,24 @@ const formatDate = (isoString) => {
     
     return `${hours}:${minutes} ${day}/${month}/${year}`;
   };
+
+
+  function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  function getComparator(order, orderBy) {
+    return order === 'desc'
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
 export default function TaskTableView(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('due_by');
@@ -105,7 +131,7 @@ export default function TaskTableView(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const rows = props.tasks.map(task=>createData(task));
-  console.log("row", rows);
+  // // console.log"row", rows);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -124,15 +150,7 @@ export default function TaskTableView(props) {
 
   const sortedRows = React.useMemo(() => {
     return rows.slice().sort((a, b) => {
-      if (orderBy === 'density' || orderBy === 'population' || orderBy === 'size') {
-        return order === 'desc'
-          ? b[orderBy] - a[orderBy]
-          : a[orderBy] - b[orderBy];
-      } else {
-        return order === 'desc'
-          ? b[orderBy].localeCompare(a[orderBy])
-          : a[orderBy].localeCompare(b[orderBy]);
-      }
+      return getComparator(order, orderBy)(a, b);
     });
   }, [order, orderBy, rows]);
 
@@ -163,20 +181,22 @@ export default function TaskTableView(props) {
           <TableBody>
             {sortedRows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((row, index) => {
+       
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                     {columns.map((column) => {
                         // if(column.id==="task_title"){
 
                         // }
                       const value = row[column.id];
                       return (
-                        <TableCell key={`${column.id}_${row.code}`} align={column.align} 
-                        component={Link} to={`/user/dashboard/task/${row.task_id}`}>
-                          {column.format && typeof value === 'number'
+                        <TableCell key={`${column.id}_${index}`} align={column.align} 
+                  to={`/user/dashboard/task/${row.task_id}`}>
+                          {column.format(value, row.task_id)}
+                          {/* {column.format && typeof value === 'number'
                             ? column.format(value)
-                            : value}
+                            : value} */}
                         </TableCell>
                       );
                     })}
