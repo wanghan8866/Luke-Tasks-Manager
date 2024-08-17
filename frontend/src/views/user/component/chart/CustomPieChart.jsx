@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import { LineChart, axisClasses, PieChart, pieArcLabelClasses  } from '@mui/x-charts';
 
-import Title from './Title';
+import Title from '../Title';
 
 // Generate Sales Data
 function createData(time, amount) {
@@ -51,7 +51,7 @@ export default function CustomPieChart(tasks_data) {
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>Task Priority</Title>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', flexGrow: 1, overflow: 'hidden' }}>
         <PieChart
           margin={{ top: -10, bottom: 30, left: 20, right: 20 }}  

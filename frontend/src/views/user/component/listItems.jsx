@@ -13,16 +13,16 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-
+import { Link } from 'react-router-dom';
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton href='/'>
+    <ListItemButton component={Link} to='/'>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
-    <ListItemButton href='/user/dashboard/task-create/'>
+    <ListItemButton component={Link} to='/user/dashboard/task-create/'>
       <ListItemIcon>
         <AddTaskIcon />
       </ListItemIcon>

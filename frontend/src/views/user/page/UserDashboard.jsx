@@ -8,16 +8,19 @@ import { Checkbox, FormControl, FormControlLabel, FormGroup, Grid, Slider } from
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import TaskCard from '../component/TaskCard';
-import Chart from '../component/Chart';
+import Chart from '../component/chart/Chart';
 import AirplayIcon from '@mui/icons-material/Airplay';
 import DashboardWrapper from '../DashboardWrapper';
 import useAxios from '../../../utils/useAxios';
 import UserData from '../../plugin/UserData';
-import CustomPieChart from '../component/CustomPieChart';
+import CustomPieChart from '../component/chart/CustomPieChart';
 import TaskDetailCard from '../component/TaskDetailCard';
 import TasksTable from '../component/TasksTable';
 // import MultiLineBarChart from '../component/MultiLineBarChart';
-import MultiLineChart from '../component/MultiLineChart';
+import MultiLineChart from '../component/chart/MultiLineChart';
+import { useTasks } from '../component/context/TaskProvider';
+import TaskTableView from '../component/TaskTableView';
+
 
 function Copyright(props) {
     return (
@@ -35,7 +38,8 @@ function createData(time, amount) {
     return { time, amount: amount ?? null };
   }
 export default function Dashboard() {
-  const [tasks, setTasks] = useState([]);
+  // const [tasks, setTasks] = useState([]);
+  const {tasks, updateTaskFromTasks} = useTasks();
   const [selectedTasks, setSelectedTasks] = useState([]);
   const [upComingDays, setUpComingDays] = useState(30);
   const [isOnlyIncludeYou, setIsOnlyIncludeYou] = useState(true);
@@ -49,47 +53,47 @@ export default function Dashboard() {
   
   // console.log("hi");
 
-  const updateTaskFromTasks=(task_id, updatedTask)=>{
-    // console.log("User", updatedTask);
-    setTasks((prevTasks)=>
-      prevTasks.map((task)=>
-        task.id===task_id?{...task, ...updatedTask}:task)
-    )
-  };
+  // const updateTaskFromTasks=(task_id, updatedTask)=>{
+  //   // console.log("User", updatedTask);
+  //   setTasks((prevTasks)=>
+  //     prevTasks.map((task)=>
+  //       task.id===task_id?{...task, ...updatedTask}:task)
+  //   )
+  // };
 
-  const deleteTaskFromTasks = (task_id) =>{
-    setTasks((prevTasks)=>prevTasks.filter((task)=>task.id!==task_id))
-  };
+  // const deleteTaskFromTasks = (task_id) =>{
+  //   setTasks((prevTasks)=>prevTasks.filter((task)=>task.id!==task_id))
+  // };
 
 
   
 
-    const fetchTasksData =  () => {
-      useAxios()
-      .get(`user/task-all/`)
-      .then((res) => {
-        // console.log(res.data);
-        // console.log(UserData());
-        // console.log(res.data);
-        setTasks(res.data);
+    // const fetchTasksData =  () => {
+    //   useAxios()
+    //   .get(`user/task-all/`)
+    //   .then((res) => {
+    //     // console.log(res.data);
+    //     // console.log(UserData());
+    //     // console.log(res.data);
+    //     setTasks(res.data);
         
-        // setNumberOfTaskInDays(res.data);
+    //     // setNumberOfTaskInDays(res.data);
 
-        // console.log("user",numberOfTaskInDays);
-        // console.log("user",tasks);
+    //     // console.log("user",numberOfTaskInDays);
+    //     // console.log("user",tasks);
         
         
 
        
-      });
-    }
+    //   });
+    // }
 
 
-    // fetchTasksData();
+    // // fetchTasksData();
 
-    useEffect(() => {
-      fetchTasksData();
-    }, []);
+    // useEffect(() => {
+    //   fetchTasksData();
+    // }, []);
 
     useEffect(() => {
     // This will show the updated tasks after setTasks is called
@@ -154,8 +158,7 @@ export default function Dashboard() {
 
       today.setHours(0, 0, 0, 0);
       in30Days.setHours(0, 0, 0, 0);
-      console.log("today", today.toISOString());
-      console.log("in30Days", in30Days.toISOString());
+
       for (let d = today; d <= in30Days; d.setDate(d.getDate() + 1)) {
         const formattedDate = new Date(d).toISOString().split('T')[0];
         // console.log("set", formattedDate, d);
@@ -387,6 +390,9 @@ export default function Dashboard() {
 
              {/* Table View */}
                 <Grid item xs={12}>
+                  {selectedTasks[0] && < TaskTableView tasks={selectedTasks}/>}
+
+        
                   
                   {/* {selectedTasks && <TasksTable tasks={selectedTasks} onUpdate={updateTaskFromTasks} onDelete={deleteTaskFromTasks}/>} */}
           

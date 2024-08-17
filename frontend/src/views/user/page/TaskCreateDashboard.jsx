@@ -8,12 +8,12 @@ import { Grid } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import TaskCard from '../component/TaskCard';
-import Chart from '../component/Chart';
+import Chart from '../component/chart/Chart';
 import AirplayIcon from '@mui/icons-material/Airplay';
 import DashboardWrapper from '../DashboardWrapper';
 import useAxios from '../../../utils/useAxios';
 import UserData from '../../plugin/UserData';
-import CustomPieChart from '../component/CustomPieChart';
+import CustomPieChart from '../component/chart/CustomPieChart';
 import TaskCreateCard from '../component/TaskCreateCard';
 import { useParams } from 'react-router-dom';
 

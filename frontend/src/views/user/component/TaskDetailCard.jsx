@@ -13,10 +13,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import ConfirmDeleteDialog from './ConfirmDeleteDialog';
 import { useNavigate } from 'react-router-dom';
+import { useTasks } from '../component/context/TaskProvider';
+
 const user = UserData();
 
 
 const TaskDetailCard = (props) => {
+  const {tasks, updateTaskFromTasks, deleteTaskFromTasks} = useTasks();
     // const [toDos, setToDos] = useState([]);
     // const [task_title, setTaskTitle] = useState("");
     const [task_status, setTaskStatus] = useState("");
@@ -31,8 +34,12 @@ const TaskDetailCard = (props) => {
     const navigate = useNavigate();
 
     const task = props.task;
-    const onUpdate = props.onUpdate;
-    const onDelete = props.onDelete;
+    const onUpdate = updateTaskFromTasks
+    const onDelete = ()=>(task_id, updated_task)=>{
+      deleteTaskFromTasks(task_id, updated_task);
+      navigate("/");
+    }
+    // console.log("taskcard", task);
     
     // const task = props.task;
 
@@ -362,7 +369,7 @@ const TaskDetailCard = (props) => {
 
         // Set the task progress color
         setProgressColor(progressColor); 
-        onUpdate(task.id, {...task, status: status, progress: progress});
+        onUpdate(task.id, {...task, status: status, progress: progress/100});
 
         
 

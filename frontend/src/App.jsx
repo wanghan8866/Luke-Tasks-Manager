@@ -11,10 +11,11 @@ import UserDashboard from "./views/user/page/UserDashboard.jsx";
 import TaskDashboard from './views/user/page/TaskDashboard.jsx';
 import './App.css'
 import TaskCreateDashboard from './views/user/page/TaskCreateDashboard.jsx';
-
+import { TaskProvider } from './views/user/component/context/TaskProvider.jsx';
 
 function App() {
   return (
+    <TaskProvider>
     <BrowserRouter>
     <MainWrapper>
       <Routes>
@@ -37,6 +38,9 @@ function App() {
     </MainWrapper>
     
     </BrowserRouter>
+
+    </TaskProvider>
+
   )
 }
 

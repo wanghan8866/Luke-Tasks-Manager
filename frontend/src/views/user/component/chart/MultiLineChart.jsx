@@ -15,22 +15,53 @@ import { ChartsAxisHighlight } from '@mui/x-charts';
 import { ChartsLegend } from '@mui/x-charts';
 import { useTheme } from '@emotion/react';
 import { axisClasses } from '@mui/x-charts';
+import { alpha } from '@mui/material/styles';
+import { useDrawingArea } from '@mui/x-charts/hooks';
 // import linearGradient
 import { LineChart, lineElementClasses } from '@mui/x-charts/LineChart';
-import Title from './Title';
+import Title from '../Title';
+
+
+const Colorswitch = () => {
+  const { top, height, bottom } = useDrawingArea();
+  const svgHeight = top + bottom + height;
+  const theme = useTheme(); 
+
+  return (
+    <svg width="100" height="100">
+          <defs>
+              <linearGradient id="paint0_linear_45_2" x1="300.25" y1="46.9999" x2="300.25" y2={`${svgHeight}px`} gradientUnits="userSpaceOnUse">
+                  <stop stopColor={theme.palette.primary.main} stopOpacity="1" />
+                  <stop offset="0.5" stopColor={theme.palette.primary.main} stopOpacity="0.1" />
+              </linearGradient>
+          </defs>
+
+          <defs>
+              <linearGradient id="paint0_linear_45_3" x1="299.498" y1="-4.28272" x2="299.498" y2={`${svgHeight}px`} gradientUnits="userSpaceOnUse">
+                  <stop stopColor={theme.palette.success.main} stopOpacity="1" />
+                  <stop offset="0.7" stopColor={theme.palette.success.main} stopOpacity="1" />
+                  <stop offset="0.8" stopColor={theme.palette.success.main} stopOpacity="0.2" />
+              </linearGradient>
+          </defs>
+          </svg>
+  )
+}
+
+
 export default function MultiLineChart(props) {
   const [isResponsive, setIsResponsive] = React.useState(true);
   const theme = useTheme(); 
-  console.log(props.tasks_data);
+  // console.log(props.tasks_data);
 //   console.log(props.tasks_data);
 //   console.log(props.tasks_data?.map((item)=>item.time));
-  const Container = isResponsive ? ResponsiveChartContainer : ChartContainer;
+  // const Container = isResponsive ? ResponsiveChartContainer : ChartContainer;
   const sizingProps = isResponsive ? {} : { width: 500, height: 300 };
   return (
     <React.Fragment>
     <Title>Upcoming Tasks</Title>
     <div style={{ width: '100%', flexGrow: 1, overflow: 'hidden' }}>
       <LineChart
+      {...sizingProps}
         dataset={props.tasks_data}
         margin={{
           top: 16,
@@ -60,28 +91,30 @@ export default function MultiLineChart(props) {
             tickNumber: 3,
           },
         ]}
+        
         series={[
           {
              id:"Total",
             dataKey: 'total',
             showMark: false,
-            color: theme.palette.primary.light,
+            color: alpha(theme.palette.primary.light, 1),
+            
             label: "Total Tasks",
             area: true,
-            showMark: ({ index }) => index % 2 === 0,
+            showMark: ({ index }) => props.tasks_data[index].total!=0,
             highlightScope: {
                 highlighted: 'item',
-                // faded: '#Completed' 
+                // faded: 'global' 
               },
           },
           {
             id:"Completed",
             dataKey: 'completed',
             showMark: false,
-            color: theme.palette.success.light,
+            color:  alpha(theme.palette.success.light, 1),
             label: "Completed Tasks",
             area: true,
-            showMark: ({ index }) => index % 2 === 0,
+            showMark: ({ index }) => props.tasks_data[index].completed!=0,
             highlightScope: {
                 highlighted: 'item',
                 faded: 'global' 
@@ -89,32 +122,21 @@ export default function MultiLineChart(props) {
           },
         ]}
         grid={{ vertical: false, horizontal: true }}
-        sx={{
-        //   [`.${axisClasses.root} line`]: { stroke: theme.palette.text.secondary },
-        //   [`.${axisClasses.root} text`]: { fill: theme.palette.text.secondary },
-          [`& .${axisClasses.left} .${axisClasses.label}`]: {
-            transform: 'translateX(-25px)',
-            [`& .${lineElementClasses.root}`]: {
-                strokeDasharray: '10 5',
-                strokeWidth: 4,
-              },
-              '& .MuiAreaElement-series-Total': {
-                // fill: "url('#myGradient')",
-                // fill:"red"
-                bgcolor:"red"
-              },
-          },
-        }}
+      //   sx={{
+      //     '.css-11xqiom-MuiAreaElement-root': {
+      //         fill: 'url(#paint0_linear_45_2)',
+      //     },
+      //     '.css-4rc6ww-MuiAreaElement-root': {
+      //         fill: 'url(#paint0_linear_45_3)',
+      //     },
+
+      // }}
         
-      />
-  <svg width="0" height="0">
-    <defs>
-      <linearGradient id="myGradient" gradientTransform="rotate(90)">
-        <stop offset="5%" stopColor="gold" />
-        <stop offset="95%" stopColor="red" />
-      </linearGradient>
-    </defs>
-  </svg>
+        
+      >
+             <Colorswitch />
+        </LineChart>
+
 
             </div>
   </React.Fragment>
