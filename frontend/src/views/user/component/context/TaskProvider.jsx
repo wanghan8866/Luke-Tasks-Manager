@@ -13,7 +13,7 @@ export const TaskProvider = ({children})=>{
 
     
     const updateTaskFromTasks=(task_id, updatedTask)=>{
-        // // console.log"updating User", updatedTask);
+        console.log("updating task", updatedTask);
         setTasks((prevTasks)=>
         prevTasks.map((task)=>
             task.id===task_id?{...task, ...updatedTask}:task)
@@ -21,9 +21,14 @@ export const TaskProvider = ({children})=>{
     };
 
     const deleteTaskFromTasks = (task_id) =>{
+        console.log("deleting task", task_id);
         setTasks((prevTasks)=>prevTasks.filter((task)=>task.id!==task_id))
     };
     
+    const appendTaskToTasks = (task_id, newTask) => {
+        console.log("appending task", newTask);
+        setTasks(prevTasks => [...prevTasks, newTask]);
+    };
 
     
     const fetchTasksData =  () => {
@@ -56,7 +61,8 @@ export const TaskProvider = ({children})=>{
 
 
     return (
-        <TasksContext.Provider value = {{tasks, updateTaskFromTasks, deleteTaskFromTasks}}>
+        <TasksContext.Provider value = {
+            {tasks, updateTaskFromTasks, deleteTaskFromTasks, setTasks, appendTaskToTasks}}>
 
             {children}
         </TasksContext.Provider>

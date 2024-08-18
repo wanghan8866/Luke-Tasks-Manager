@@ -62,6 +62,7 @@ const navigate = useNavigate();
         setIsLoading(false);
     }else{
         navigate("/user/dashboard/");
+        window.location.reload();
         setIsLoading(false);
     }
 

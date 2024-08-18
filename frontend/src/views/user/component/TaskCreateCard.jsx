@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useParams } from 'react-router-dom';
 import axios from '../../../utils/axios';
+import useAxios from '../../../utils/useAxios';
 import UserData from '../../plugin/UserData';
 import CheckIcon from '@mui/icons-material/Check';
 import {LocalizationProvider, DateTimePicker} from "@mui/x-date-pickers";
@@ -13,10 +14,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import ConfirmDeleteDialog from './ConfirmDeleteDialog';
 import { useNavigate } from 'react-router-dom';
+import { useTasks } from './context/TaskProvider';
 const user = UserData();
 
 
 const TaskCreateCard = () => {
+    const {setTasks, appendTaskToTasks, updateTaskFromTasks} = useTasks();
     const [toDos, setToDos] = useState([]);
     // const [task_title, setTaskTitle] = useState("");
     const [task_status, setTaskStatus] = useState("");
@@ -35,6 +38,7 @@ const TaskCreateCard = () => {
     const [emails, setEmails] = useState([]);
     const [newTodo, setNewTodo] = useState("");
     const [statusOptions, setStatusOptions] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
     // const task = props.task;
@@ -91,7 +95,7 @@ const TaskCreateCard = () => {
 
         // console.log"Handle Update!");
         // setIsEditing(false);
-
+        setIsLoading(true);
 
         try{
             // user//120/
@@ -109,8 +113,10 @@ const TaskCreateCard = () => {
        
             // console.log"Create task",response_.data);
             // setTask(response_.data);
+            
+            appendTaskToTasks(response_.data.id, response_.data);
 
-            toDos.forEach((todo)=>{
+            const new_todos =  await toDos.map((todo)=>{
 
                 const formToDO = new FormData();
                 formToDO.append("title", todo.title);
@@ -121,8 +127,10 @@ const TaskCreateCard = () => {
                     axios
                     .post(`user/todo-create/`, formToDO)
                     .then((res_todo) => {
-                      // console.log"Update toDo",res_todo.data);
-                      // setToDos(res.data);
+             
+                      // console.log(res_todo.data)
+                      return res_todo.data;
+                      
                       
                
             
@@ -130,6 +138,7 @@ const TaskCreateCard = () => {
                     });
                 }
                 catch(error){
+                  setIsLoading(false);
                     alert(error);
                 }
               }
@@ -139,12 +148,27 @@ const TaskCreateCard = () => {
 
               
               )
+                
+              // updateTaskFromTasks(response_.data.id, {...response_.data, todos:new_todos})
+              
+              
+              await useAxios()
+              .get(`user/task-all/`)
+              .then((res) => {
+                // console.log("create task", res.data);
+                setTasks(res.data);
+      
+                
+               
+              })
+              setIsLoading(false);
               // // console.log"Navigate!");
               navigate(`/user/dashboard/task/${response_.data.id}/`);
   
            
         }catch(error){
             // // console.logerror);
+            setIsLoading(false);
             alert(error);
         }
 
@@ -653,7 +677,10 @@ return (
                   height: '64px', // Increase button size
                 }}
               >
-                <CheckIcon sx={{ fontSize: 40 }} /> {/* Increase the icon size */}
+                
+                {isLoading && <>Processing <i className="fas fa-spinner fa-spin"></i>
+                </>}
+                {!isLoading && <CheckIcon sx={{ fontSize: 40 }} />}
               </IconButton>
             </Box>
       

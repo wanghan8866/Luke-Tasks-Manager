@@ -12,10 +12,12 @@ import TaskDashboard from './views/user/page/TaskDashboard.jsx';
 import './App.css'
 import TaskCreateDashboard from './views/user/page/TaskCreateDashboard.jsx';
 import { TaskProvider } from './views/user/component/context/TaskProvider.jsx';
+import { UIControlProvider } from './views/user/component/context/UIControlProvider.jsx';
 
 function App() {
   return (
     <TaskProvider>
+      <UIControlProvider>
     <BrowserRouter>
     <MainWrapper>
       <Routes>
@@ -42,7 +44,7 @@ function App() {
     </MainWrapper>
     
     </BrowserRouter>
-
+    </UIControlProvider>
     </TaskProvider>
 
   )

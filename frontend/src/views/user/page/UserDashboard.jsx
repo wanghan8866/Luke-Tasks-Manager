@@ -20,7 +20,7 @@ import TasksTable from '../component/TasksTable';
 import MultiLineChart from '../component/chart/MultiLineChart';
 import { useTasks } from '../component/context/TaskProvider';
 import TaskTableView from '../component/TaskTableView';
-
+import { useUIControls } from '../component/context/UIControlProvider';
 
 function Copyright(props) {
     return (
@@ -38,17 +38,17 @@ function createData(time, amount) {
     return { time, amount: amount ?? null };
   }
 export default function Dashboard() {
+
+  
   // const [tasks, setTasks] = useState([]);
   const {tasks, updateTaskFromTasks} = useTasks();
   const [selectedTasks, setSelectedTasks] = useState([]);
-  const [upComingDays, setUpComingDays] = useState(30);
-  const [isOnlyIncludeYou, setIsOnlyIncludeYou] = useState(true);
-  const [isInlucdeAllTime, setIsInlucdeAllTime] = useState(false);
   const [numberOfTaskInDays, setNumberOfTaskInDays] = useState([]);
   const [numberOfTaskByPriority, setNumberOfTaskByPriority] = useState([]);
   const [upcomingUrgentTasks, setUpcomingUrgentTasks] = useState({completed:0, total: 0});
   const [upcomingTasks, setUpcomingTasks] = useState({completed:0, total: 0});
   const [allTasks, setAllTasks] = useState({completed:0, total: 0});
+  const {upComingDays,isInlucdeAllTime,isOnlyIncludeYou,setUpComingDays, setIsOnlyIncludeYou, setIsInlucdeAllTime} = useUIControls();
   const user = UserData();
   
   // // console.log"hi");
@@ -278,7 +278,7 @@ export default function Dashboard() {
       sx={{ 
         display: 'flex', 
         alignItems: 'center', 
-        justifyContent: 'flex-start' // or 'center' if you want to center horizontally too
+        justifyContent: 'flex-start'
       }}
     >
       <FormControlLabel

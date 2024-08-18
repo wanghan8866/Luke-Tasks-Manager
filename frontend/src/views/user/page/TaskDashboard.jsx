@@ -59,6 +59,7 @@ export default function TaskDashboard() {
   
   // // console.log"hi");
   const findTask = ()=>{
+    // console.log(tasks);
     return tasks.length!=0?tasks.find(t=>t.id===parseInt(param.task_id)):{}
   }
   

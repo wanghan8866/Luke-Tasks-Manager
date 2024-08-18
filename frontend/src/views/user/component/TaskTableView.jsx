@@ -9,6 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import { Link } from 'react-router-dom';
+import { useUIControls } from './context/UIControlProvider';
 const priority_map = {
     1:"High",
     2: "Normal",
@@ -125,10 +126,8 @@ const formatDate = (isoString) => {
   }
 
 export default function TaskTableView(props) {
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('due_by');
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const {orderBy, setOrderBy,order, setOrder, page, setPage, rowsPerPage, setRowsPerPage } = useUIControls();
 
   const rows = props.tasks.map(task=>createData(task));
   // // console.log"row", rows);

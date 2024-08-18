@@ -47,6 +47,8 @@ export const register = async (full_name, email, password, password2) => {
 export const logout = () => {
   Cookie.remove("access_token");
   Cookie.remove("refresh_token");
+  Cookie.remove("csrftoken");
+  Cookie.remove("sessionid");
   useAuthStore.getState().setUser(null);
 };
 
