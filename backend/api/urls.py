@@ -42,5 +42,6 @@ urlpatterns = [
    # Testing
     path("test/random-create/", api_views.TestCreateRandomTasksAndToDos.as_view()),
     path("test/delete-all/", api_views.TestDeleteAllTasksAndToDos.as_view()),
+    path("test/summary/", api_views.TestSummaryView.as_view()),
 
 ]

@@ -67,6 +67,7 @@ class TaskSerializer(serializers.ModelSerializer):
         return obj.user.email if obj.user else None
     
 class TaskSummarySerializer(serializers.ModelSerializer):
+    """Get the progress and status for task"""
     todos = ToDoSerializer(many=True, read_only=True,)
     user_email = serializers.SerializerMethodField()
     class Meta:
@@ -75,3 +76,9 @@ class TaskSummarySerializer(serializers.ModelSerializer):
 
     def get_user_email(self, obj):
         return obj.user.email if obj.user else None
+    
+class SummaryInputSerializer(serializers.Serializer):
+    user_email = serializers.EmailField()
+    isOnlyIncludeYou = serializers.BooleanField(required=False, default=True, label="Only Include You")
+    isInlucdeAllTime = serializers.BooleanField(required=False, default=False, label="Include All Time")
+    upComingDays = serializers.IntegerField(required=False, default=30, max_value=100, min_value=1, label="Upcoming Days")

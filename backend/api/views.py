@@ -10,11 +10,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.db.models import Count, Min, Max
 from django.conf import settings
 from django.utils import timezone
 from datetime import datetime, time
 import random
 from faker import Faker
+from datetime import datetime, timedelta
 # Create your views here.
 fake = Faker()
 
@@ -423,3 +425,80 @@ class TestDeleteAllTasksAndToDos(APIView):
             {"message":f"Deleted all {tasks_count} tasks for all {users.count()} users"},
             status=status.HTTP_204_NO_CONTENT
         )
+    
+    
+class TestSummaryView(APIView):
+    """report"""
+    ermission_classes = [IsAuthenticated]
+    serializer_class = api_serializer.SummaryInputSerializer
+
+
+    def post(self, request, *args, **kwargs):
+        # try:
+            data = request.data
+            email = data.get("user_email")
+            isOnlyIncludeYou = data.get("isOnlyIncludeYou")
+            isInlucdeAllTime = data.get("isInlucdeAllTime")
+            upComingDays = int(data.get("upComingDays")) if not isInlucdeAllTime else 0
+
+
+            
+            response_data = {}
+            user = User.objects.get(email=email)
+            
+            # only the current user or all users
+            tasks =  api_models.Task.objects.filter(user=user) if isOnlyIncludeYou else api_models.Task.objects.all()
+            
+            if not isInlucdeAllTime:
+
+                upcomingTasks = tasks.filter(
+                    due_by__gte=timezone.now(),
+                    due_by__lte=timezone.now() + timedelta(days=upComingDays))
+                start_date = timezone.now().date()
+                end_date = timezone.now().date() + timedelta(days=upComingDays)
+            else:
+                upcomingTasks = tasks
+                start_date = upcomingTasks.aggregate(Min('due_by')).get('due_by__min', timezone.now().date())
+                end_date = upcomingTasks.aggregate(Max('due_by')).get('due_by__max', timezone.now().date())
+            
+            date_list = [(start_date + timedelta(days=x)) for x in range((end_date - start_date).days + 1)]
+            task_date_counter = {date:0 for date in date_list}
+            # print("start date", start_date, "end date", end_date, date_list)
+            
+            
+             # list of the number of tasks in each day for upcoming days
+            for task in upcomingTasks:
+                task_date_counter[task.due_by.date()] = 1 + task_date_counter.get(task.due_by.date(), 0)
+            tasks_per_day = list(task_date_counter.values())
+            test_sum = sum(tasks_per_day)
+            print(tasks_per_day, test_sum)
+            response_data["tasks_per_day"] = tasks_per_day
+
+
+            # list of the number of tasks in each priority for upcoming days
+            tasks_per_priority = list(upcomingTasks.values("priority").annotate(amount=Count("id")).order_by("priority").values_list('amount', flat=True))
+            print(tasks_per_priority)
+            response_data["tasks_per_priority"] = tasks_per_priority
+
+            # count of urgent tasks for upcoming days
+            upcomingUrgentTasks= upcomingTasks.filter(is_urgent=True)
+            urgent_completion = sum([1 for task in upcomingUrgentTasks if abs(task.progress()-1) < 1e-3])
+            print(upcomingUrgentTasks.count(), urgent_completion)
+            response_data["upcoming_urgent_tasks"] = {"completed":urgent_completion, "total":upcomingUrgentTasks.count()}
+            
+            # count of tasks for upcoming days
+            upcoming_completion = sum([1 for task in upcomingTasks if abs(task.progress()-1) < 1e-3])
+            print(upcomingTasks.count(), upcoming_completion)
+            response_data["upcoming_tasks"] = {"completed":upcoming_completion, "total":upcomingTasks.count()}
+            
+
+            # count of tasks for all time
+            all_completion = sum([1 for task in tasks if abs(task.progress()-1) < 1e-3])
+            print(tasks.count(), all_completion)
+            response_data["total_tasks"] = {"completed":all_completion, "total":tasks.count()}
+          
+            # response_data["user"] = user
+
+            return Response(response_data)
+        # except Exception as e:
+        #     return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
