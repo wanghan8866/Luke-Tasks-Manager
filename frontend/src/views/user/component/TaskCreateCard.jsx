@@ -108,7 +108,7 @@ const TaskCreateCard = () => {
             formdata.append("is_urgent", task.is_urgent);
             formdata.append("priority", task.priority);
 
-
+            
             const response_ = await axios.post("user/task-create-email/", formdata)
        
             // console.log"Create task",response_.data);
@@ -130,14 +130,11 @@ const TaskCreateCard = () => {
              
                       // console.log(res_todo.data)
                       return res_todo.data;
-                      
-                      
-               
-            
-                      
+                                           
                     });
                 }
                 catch(error){
+           
                   setIsLoading(false);
                     alert(error);
                 }
@@ -167,9 +164,16 @@ const TaskCreateCard = () => {
   
            
         }catch(error){
-            // // console.logerror);
+            // console.log(error);
             setIsLoading(false);
-            alert(error);
+            
+            var allMessages = []
+            for(let key in error.response.data){
+              if( error.response.data.hasOwnProperty(key)){
+                allMessages = allMessages.concat(error.response.data[key])
+              }
+            }
+            alert(allMessages);
         }
 
         
@@ -374,7 +378,8 @@ return (
       <CardContent>
         {isEditing
 
-        ?(        <Select
+        ?(        <Select 
+          required
             value={task_status}
             onChange={(e) => handleStatusUpdate(e.target.value)}
             sx={{

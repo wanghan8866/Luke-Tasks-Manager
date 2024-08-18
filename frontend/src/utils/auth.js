@@ -35,11 +35,18 @@ export const register = async (full_name, email, password, password2) => {
     await login(email, password);
     return { data, error: null };
   } catch (error) {
+    
+    var allMessages = []
+    for(let key in error.response.data){
+      if( error.response.data.hasOwnProperty(key)){
+        allMessages = allMessages.concat(error.response.data[key])
+      }
+    }
+    // console.log(allMessages);
     return {
       data: null,
-      error:
-        `${error.response.data.full_name} - ${error.response.data.email}` ||
-        "Something went wrong",
+      error:allMessages
+        
     };
   }
 };
