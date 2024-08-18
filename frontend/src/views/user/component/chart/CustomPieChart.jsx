@@ -51,7 +51,7 @@ export default function CustomPieChart(tasks_data) {
 
   return (
     <React.Fragment>
-      <Title>Task Priority</Title>
+      <Title>Tasks by Priority</Title>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', flexGrow: 1, overflow: 'hidden' }}>
         <PieChart
           margin={{ top: -10, bottom: 30, left: 20, right: 20 }}  

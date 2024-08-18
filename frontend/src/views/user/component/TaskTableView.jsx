@@ -56,7 +56,7 @@ const columns = [
     label: 'Priority',
     minWidth: 170,
     align: 'right',
-    format: (value, id) => priority_map[value],
+    format: (value, id) => (priority_map[value]),
   },
   {
     id: 'number_of_todos',

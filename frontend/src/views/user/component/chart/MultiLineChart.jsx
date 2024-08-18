@@ -21,7 +21,7 @@ import { ResponsiveChartContainer } from '@mui/x-charts';
 // import linearGradient
 import { LineChart, lineElementClasses } from '@mui/x-charts/LineChart';
 import Title from '../Title';
-
+import { useUIControls } from '../context/UIControlProvider';
 
 const Colorswitch = () => {
   const { top, height, bottom } = useDrawingArea();
@@ -51,6 +51,7 @@ const Colorswitch = () => {
 
 export default function MultiLineChart(props) {
   const [isResponsive, setIsResponsive] = React.useState(true);
+  const {upComingDays, isInlucdeAllTime} = useUIControls();
   const theme = useTheme(); 
   // // console.logprops.tasks_data);
 //   // console.logprops.tasks_data);
@@ -59,8 +60,8 @@ export default function MultiLineChart(props) {
   const sizingProps = isResponsive ? {} : { width: 500, height: 300 };
   return (
     <React.Fragment>
-    <Title>Upcoming Tasks</Title>
-    <div style={{ width: "100%", display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', flexGrow: 1, overflow: 'hidden' }}>
+    <Title>Upcoming Tasks {(isInlucdeAllTime)?"for All Time":`for the Next ${upComingDays} ${upComingDays===1?"Day":"Days"}`}</Title>
+    <div style={{ width: "100%", display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1, overflow: 'hidden' }}>
 
 
       <LineChart
@@ -100,7 +101,6 @@ export default function MultiLineChart(props) {
           {
              id:"Total",
             dataKey: 'total',
-            showMark: false,
             color: alpha(theme.palette.primary.light, 1),
             
             label: "Total Tasks",
@@ -114,7 +114,6 @@ export default function MultiLineChart(props) {
           {
             id:"Completed",
             dataKey: 'completed',
-            showMark: false,
             color:  alpha(theme.palette.success.light, 1),
             label: "Completed Tasks",
             area: true,
