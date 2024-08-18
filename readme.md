@@ -8,6 +8,14 @@ This document provides a comprehensive guide for setting up and developing a ful
   - [Install Python Dependencies](#install-python-dependencies)
   - [Django Project Initialization](#django-project-initialization)
   - [React.js and Yarn](#react-and-yarn)
+- [Content](#content)
+    - [Frontend Routes](#frontend-routes)
+        - [Authentication](#authentication)
+        - [Dashboard](#dashboard)
+    - [Backend API Endpoints](#backend-api-endpoints)
+        - [Tasks](#tasks)
+        - [ToDos](#todos)
+        - [Testing](#testing)
 - [Development Resources](#development-resources)
     - [Frontend Development Resources](#frontend-development)
     - [Backend Development Resources](#backend-development)
@@ -77,11 +85,67 @@ yarn
 yarn dev
 ```
 # Content
-## Frontend
-The application will consist of three main pages:
+
+## Frontend Routes
+
+### Authentication
+
+- **/register/**: Register a new user account (Public Only)
+- **/login/**: User login (Public Only)
+- **/logout/**: User logout (Only Logged-in users)
+- **/forgot-password/**: Password recovery feature (Public Only, restricted to registered emails due to [Mailgun API](https://www.mailgun.com/) limitations)
+- **/create-new-password/**: Reset password interface (Public Only)
 
 
-## Backend
+
+### Dashboard
+ (Requires Login)
+
+- **/user/dashboard/**: Central dashboard offering:
+  - Line chart of upcoming tasks
+  - Pie chart of tasks by priority
+  - Counters for urgent tasks, upcoming tasks, and total tasks
+  - A sortable table view of all tasks
+   ![Dashboard Page](images/dashboard.png)
+- **/user/dashboard/task/:task_id/**: 
+    - Detailed task view 
+    - allowing for edits and adding todos
+ ![View Task Page](images/card.png)
+- **/user/dashboard/task-create/**: 
+    - Interface to create new tasks with todos
+ ![Create Task Page](images/create.png)
+
+
+
+## Backend API Endpoints
+Please use the `http://localhost:8000/api/v1api/v1/` in a browser to see all options and arguments. 
+
+### Tasks
+
+- CRUD operations for tasks and additional endpoints for detailed task management, including email-based task creation and updates.
+
+### ToDos
+
+- Comprehensive ToDo management from creation to deletion, including viewing details and marking ToDos as completed.
+
+### Testing
+
+- Endpoints for generating random tasks and deleting all tasks to facilitate testing and development.
+#### Create Random Tasks and ToDos
+- **Endpoint**: `api/v1/test/random-create/`
+- **Method**: POST
+- **Description**: Generates random tasks with associated todos for each user. 
+
+
+#### Delete All Tasks
+- **Endpoint**: `api/v1/test/delete-all/`
+- **Method**: DELETE
+- **Description**: Deletes all tasks and associated todos from the database. 
+
+#### Summary of Tasks
+- **Endpoint**: `api/v1/test/summary/`
+- **Method**: POST
+- **Description**: Provides a summary of tasks, including a list of tasks per day, tasks sorted by priority, and counters for urgent tasks. This endpoint is used primarily to validate and ensure that the calculations made on the backend match expected outcomes and are consistent with frontend calculations.
 
 
 # Development Resources
