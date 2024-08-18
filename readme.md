@@ -162,7 +162,7 @@ This document lists various resources for frontend and backend development, cate
 ### Material UI
 
 - **Material UI Customization**: Master the customization of MUI components with this detailed Udemy course.
-  [Mastering MUI Component Customization - Udemy](https://www.udemy.com/course/mastering-mui-component-customization/learn/lecture/41374942?start=870#overview)
+  [Mastering MUI Component Customization - Udemy](https://www.udemy.com/course/mastering-mui-component-customization/)
 
 - **Table Design with MUI**: Learn how to design and implement tables using Material UI.
   [Material UI React Table](https://mui.com/material-ui/react-table/)
@@ -186,7 +186,7 @@ This document lists various resources for frontend and backend development, cate
   [Django Documentation](https://docs.djangoproject.com/en/4.2/intro/)
 
 - **Django with React Tutorial**: Learn how to integrate Django with React in this comprehensive Udemy course.
-  [Learning Management System with Django and React - Udemy](https://www.udemy.com/course/learning-management-system-with-django-and-react/learn/lecture/42524102#overview)
+  [Learning Management System with Django and React - Udemy](https://www.udemy.com/course/learning-management-system-with-django-and-react/)
 
 - **YouTube Django Tutorials**: Enhance your Django skills with these tutorial videos.
   - [Django YouTube Tutorial 1](https://www.youtube.com/watch?v=Rp5vd34d-z4)
